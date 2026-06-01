@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* Mejoras para móvil */
+@media (max-width: 640px) {
+  /* Botones más grandes para tocar */
+  button, 
+  a:not(.no-touch) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Espaciado en formularios */
+  input, select, textarea {
+    font-size: 16px; /* Evita zoom automático en iOS */
+  }
+  
+  /* Padding reducido en contenedores */
+  .container-padding {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+/* Ajuste de fuente en móvil */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  p, span, a, button, input, textarea, select {
+    font-size: 0.9rem;
+  }
+}
+/* Botones más cómodos en móvil */
+@media (max-width: 640px) {
+  button, 
+  .btn,
+  a:not(.no-touch) {
+    min-height: 44px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  /* Espaciado entre botones en móvil */
+  .flex.gap-2, .flex.gap-3, .flex.gap-4 {
+    gap: 0.75rem;
+  }
+  
+  /* Inputs más grandes en móvil */
+  input, select, textarea {
+    font-size: 16px; /* Evita zoom en iOS */
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
