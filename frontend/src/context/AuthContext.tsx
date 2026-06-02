@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       // Verificar el token con el backend
       try {
-        const response = await fetch('http://localhost:3000/api/auth/verify', {
+        const response = await fetch('/api/auth/verify', {
           headers: {
             'Authorization': `Bearer ${storedToken}`
           }
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
