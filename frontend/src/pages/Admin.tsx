@@ -24,7 +24,7 @@ function Admin() {
         // Obtener servicios
         let servicios = 0;
         try {
-          const serviciosRes = await fetch('http://localhost:3000/api/servicios');
+          const serviciosRes = await fetch('/api/servicios');
           const serviciosData = await serviciosRes.json();
           if (Array.isArray(serviciosData)) {
             servicios = serviciosData.length;
@@ -38,7 +38,7 @@ function Admin() {
         // Obtener testimonios
         let testimonios = 0;
         try {
-          const testimoniosRes = await fetch('http://localhost:3000/api/testimonios');
+          const testimoniosRes = await fetch('/api/testimonios');
           const testimoniosData = await testimoniosRes.json();
           testimonios = Array.isArray(testimoniosData) ? testimoniosData.length : 0;
         } catch (e) {
@@ -49,7 +49,7 @@ function Admin() {
         let mensajes = 0;
         const token = localStorage.getItem('token');
         try {
-          const mensajesRes = await fetch('http://localhost:3000/api/mensajes', {
+          const mensajesRes = await fetch('/api/mensajes', {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           if (mensajesRes.ok) {
