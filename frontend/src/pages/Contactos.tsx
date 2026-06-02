@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Clock, Send, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, ArrowLeft, CheckCircle, AlertCircle, FileText, Download } from 'lucide-react';
 import MapaContacto from '../components/ui/MapaContacto';
 
 function Contacto() {
@@ -14,7 +14,7 @@ function Contacto() {
   const [loading, setLoading] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
-
+  
   // Detectar si viene de un producto o servicio
   const params = new URLSearchParams(location.search);
   const producto = params.get('producto');
@@ -37,11 +37,22 @@ function Contacto() {
     setError('');
     setEnviado(false);
 
+    if (!formData.nombre || !formData.email || !formData.mensaje) {
+      setError('Por favor, completa los campos requeridos');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:3000/api/mensajes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          email: formData.email,
+          telefono: formData.telefono,
+          mensaje: formData.mensaje
+        })
       });
 
       if (response.ok) {
@@ -77,7 +88,7 @@ function Contacto() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">
       {/* Botón volver dinámico */}
-      <Link
+      <Link 
         to={getBackUrl()}
         className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition"
       >
@@ -88,24 +99,24 @@ function Contacto() {
       <p className="text-gray-300 text-center text-lg mb-12 max-w-2xl mx-auto">
         ¿Tienes un proyecto en mente? Contáctanos y te asesoraremos sin compromiso.
       </p>
-
+      
       <div className="grid md:grid-cols-2 gap-12">
         {/* Formulario */}
         <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
           <h2 className="text-2xl font-semibold text-white mb-6">Envíanos un mensaje</h2>
-
+          
           {enviado && (
             <div className="bg-green-900/50 border border-green-700 rounded-lg p-3 text-green-300 text-sm mb-4 flex items-center gap-2">
               <CheckCircle size={16} /> ¡Mensaje enviado! Te contactaremos pronto.
             </div>
           )}
-
+          
           {error && (
             <div className="bg-red-900/50 border border-red-700 rounded-lg p-3 text-red-300 text-sm mb-4 flex items-center gap-2">
               <AlertCircle size={16} /> {error}
             </div>
           )}
-
+          
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-gray-300 text-sm mb-1">Nombre completo *</label>
@@ -156,9 +167,10 @@ function Contacto() {
             </button>
           </form>
         </div>
-
-        {/* Información de contacto */}
+        
+        {/* Columna derecha */}
         <div className="space-y-6">
+          {/* Información de contacto */}
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <h2 className="text-2xl font-semibold text-white mb-6">Información de contacto</h2>
             <div className="space-y-4">
@@ -166,7 +178,7 @@ function Contacto() {
                 <MapPin className="text-blue-400 w-5 h-5 mt-0.5" />
                 <div>
                   <p className="text-white font-medium">Dirección</p>
-                  <p className="text-gray-400">La Habana, Cuba</p>
+                  <p className="text-gray-400">Camagüey, Cuba</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -192,13 +204,37 @@ function Contacto() {
               </div>
             </div>
           </div>
-
-          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-            <h2 className="text-xl font-semibold text-white mb-4">Ubicación</h2>
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <h2 className="text-xl font-semibold text-white mb-4">📍 Nuestra Ubicación</h2>
-              <MapaContacto />
+          
+          {/* Tarjeta de descarga de proforma */}
+          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition">
+            <div className="flex items-start gap-4">
+              <div className="bg-blue-600/20 p-3 rounded-lg">
+                <FileText className="text-blue-400 w-6 h-6" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-white font-semibold mb-1">Proforma de contrato</h3>
+                <p className="text-gray-400 text-sm mb-3">
+                  Descarga nuestro modelo de contrato para revisar los términos y condiciones de nuestros servicios.
+                </p>
+                <a
+                  href="/docs/proforma-contrato.zip"
+                  download
+                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition text-sm"
+                >
+                  <Download size={16} />
+                  Descargar proforma
+                </a>
+                <p className="text-gray-500 text-xs mt-2">
+                  Formato ZIP - Tamaño aproximado: 2.5 MB
+                </p>
+              </div>
             </div>
+          </div>
+          
+          {/* Mapa */}
+          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+            <h2 className="text-xl font-semibold text-white mb-4">📍 Nuestra Ubicación</h2>
+            <MapaContacto />
           </div>
         </div>
       </div>

@@ -43,23 +43,23 @@ function Footer() {
     setNewsletterLoading(true);
     setNewsletterMensaje('');
     setNewsletterError(false);
-    
+
     if (!newsletterEmail) {
       setNewsletterMensaje('Por favor, ingresa un email');
       setNewsletterError(true);
       setNewsletterLoading(false);
       return;
     }
-    
+
     try {
       const response = await fetch('http://localhost:3000/api/suscriptores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: newsletterEmail })
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
         setNewsletterMensaje('✅ ¡Suscripción exitosa!');
         setNewsletterEmail('');
@@ -99,40 +99,40 @@ function Footer() {
             </p>
             <div className="flex space-x-4">
               {config.facebook && (
-                <a 
-                  href={config.facebook} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href={config.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-blue-600 transition text-xl"
                 >
                   <FaFacebook size={20} />
                 </a>
               )}
               {config.twitter && (
-                <a 
-                  href={config.twitter} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href={config.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-sky-500 transition text-xl"
                 >
                   <FaTwitter size={20} />
                 </a>
               )}
               {config.instagram && (
-                <a 
-                  href={config.instagram} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href={config.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-pink-600 transition text-xl"
                 >
                   <FaInstagram size={20} />
                 </a>
               )}
               {config.linkedin && (
-                <a 
-                  href={config.linkedin} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href={config.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-blue-700 transition text-xl"
                 >
                   <FaLinkedin size={20} />
@@ -151,6 +151,11 @@ function Footer() {
               <li><Link to="/productos" className="text-gray-400 hover:text-blue-400 transition text-sm">Productos</Link></li>
               <li><Link to="/testimonios" className="text-gray-400 hover:text-blue-400 transition text-sm">Testimonios</Link></li>
               <li><Link to="/contacto" className="text-gray-400 hover:text-blue-400 transition text-sm">Contacto</Link></li>
+              <li>
+                <a href="/docs/proforma-contrato.zip" download className="text-gray-400 hover:text-blue-400 transition text-sm">
+                  📄 Proforma de contrato
+                </a>
+              </li>
             </ul>
           </div>
 
