@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { MapPin, Mail, Phone, Clock } from 'lucide-react';
+import { MapPin, Mail, Phone, Clock, FileText, Download } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 interface Configuracion {
@@ -22,6 +22,7 @@ function Footer() {
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [newsletterMensaje, setNewsletterMensaje] = useState('');
   const [newsletterError, setNewsletterError] = useState(false);
+  const [proformaExists, setProformaExists] = useState(false);
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -38,28 +39,43 @@ function Footer() {
     fetchConfig();
   }, []);
 
+  useEffect(() => {
+    const checkProforma = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/archivos/proforma');
+        if (response.ok) {
+          const data = await response.json();
+          setProformaExists(data.exists);
+        }
+      } catch (error) {
+        console.error('Error al verificar proforma:', error);
+      }
+    };
+    checkProforma();
+  }, []);
+
   const handleSubmitNewsletter = async (e: React.FormEvent) => {
     e.preventDefault();
     setNewsletterLoading(true);
     setNewsletterMensaje('');
     setNewsletterError(false);
-
+    
     if (!newsletterEmail) {
       setNewsletterMensaje('Por favor, ingresa un email');
       setNewsletterError(true);
       setNewsletterLoading(false);
       return;
     }
-
+    
     try {
       const response = await fetch('http://localhost:3000/api/suscriptores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: newsletterEmail })
       });
-
+      
       const data = await response.json();
-
+      
       if (response.ok) {
         setNewsletterMensaje('✅ ¡Suscripción exitosa!');
         setNewsletterEmail('');
@@ -99,41 +115,41 @@ function Footer() {
             </p>
             <div className="flex space-x-4">
               {config.facebook && (
-                <a
-                  href={config.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-blue-600 transition text-xl"
+                <a 
+                  href={config.facebook} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-gray-400 hover:text-blue-600 transition"
                 >
                   <FaFacebook size={20} />
                 </a>
               )}
               {config.twitter && (
-                <a
-                  href={config.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-sky-500 transition text-xl"
+                <a 
+                  href={config.twitter} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-gray-400 hover:text-sky-500 transition"
                 >
                   <FaTwitter size={20} />
                 </a>
               )}
               {config.instagram && (
-                <a
-                  href={config.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-pink-600 transition text-xl"
+                <a 
+                  href={config.instagram} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-gray-400 hover:text-pink-600 transition"
                 >
                   <FaInstagram size={20} />
                 </a>
               )}
               {config.linkedin && (
-                <a
-                  href={config.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-blue-700 transition text-xl"
+                <a 
+                  href={config.linkedin} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-gray-400 hover:text-blue-700 transition"
                 >
                   <FaLinkedin size={20} />
                 </a>
@@ -151,11 +167,17 @@ function Footer() {
               <li><Link to="/productos" className="text-gray-400 hover:text-blue-400 transition text-sm">Productos</Link></li>
               <li><Link to="/testimonios" className="text-gray-400 hover:text-blue-400 transition text-sm">Testimonios</Link></li>
               <li><Link to="/contacto" className="text-gray-400 hover:text-blue-400 transition text-sm">Contacto</Link></li>
-              <li>
-                <a href="/docs/proforma-contrato.zip" download className="text-gray-400 hover:text-blue-400 transition text-sm">
-                  📄 Proforma de contrato
-                </a>
-              </li>
+              {proformaExists && (
+                <li>
+                  <a 
+                    href="/docs/proforma-contrato.zip" 
+                    download 
+                    className="text-gray-400 hover:text-blue-400 transition text-sm flex items-center gap-1"
+                  >
+                    <FileText size={14} /> Proforma de contrato
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
 

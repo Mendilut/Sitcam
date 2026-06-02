@@ -13,7 +13,7 @@ import { initSocket } from './socket';
 import usuariosRoutes from './routes/usuarios';
 import suscriptoresRoutes from './routes/suscriptores';
 import equipoRoutes from './routes/equipo';
-
+import archivosRoutes from './routes/archivos';
 
 dotenv.config();
 
@@ -35,6 +35,7 @@ app.use('/api/mensajes', mensajesRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/suscriptores', suscriptoresRoutes);
 app.use('/api/equipo', equipoRoutes);
+app.use('/api/archivos', archivosRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Servidor funcionando' });

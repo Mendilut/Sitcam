@@ -14,6 +14,8 @@ function Contacto() {
   const [loading, setLoading] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
+  const [proformaExists, setProformaExists] = useState(false);
+  const [checkingProforma, setCheckingProforma] = useState(true);
   
   // Detectar si viene de un producto o servicio
   const params = new URLSearchParams(location.search);
@@ -21,6 +23,25 @@ function Contacto() {
   const productoServicio = params.get('tipo') === 'servicio' ? 'servicio' : 'producto';
   const itemId = params.get('id');
   const itemNombre = params.get('nombre');
+
+  // Verificar si existe la proforma
+  useEffect(() => {
+    const checkProforma = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/archivos/proforma');
+        if (response.ok) {
+          const data = await response.json();
+          setProformaExists(data.exists);
+        }
+      } catch (error) {
+        console.error('Error al verificar proforma:', error);
+        setProformaExists(false);
+      } finally {
+        setCheckingProforma(false);
+      }
+    };
+    checkProforma();
+  }, []);
 
   useEffect(() => {
     if (producto) {
@@ -205,31 +226,33 @@ function Contacto() {
             </div>
           </div>
           
-          {/* Tarjeta de descarga de proforma */}
-          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition">
-            <div className="flex items-start gap-4">
-              <div className="bg-blue-600/20 p-3 rounded-lg">
-                <FileText className="text-blue-400 w-6 h-6" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-white font-semibold mb-1">Proforma de contrato</h3>
-                <p className="text-gray-400 text-sm mb-3">
-                  Descarga nuestro modelo de contrato para revisar los términos y condiciones de nuestros servicios.
-                </p>
-                <a
-                  href="/docs/proforma-contrato.zip"
-                  download
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition text-sm"
-                >
-                  <Download size={16} />
-                  Descargar proforma
-                </a>
-                <p className="text-gray-500 text-xs mt-2">
-                  Formato ZIP - Tamaño aproximado: 2.5 MB
-                </p>
+          {/* Tarjeta de descarga de proforma - solo si existe */}
+          {!checkingProforma && proformaExists && (
+            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition">
+              <div className="flex items-start gap-4">
+                <div className="bg-blue-600/20 p-3 rounded-lg">
+                  <FileText className="text-blue-400 w-6 h-6" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-white font-semibold mb-1">Proforma de contrato</h3>
+                  <p className="text-gray-400 text-sm mb-3">
+                    Descarga nuestro modelo de contrato para revisar los términos y condiciones de nuestros servicios.
+                  </p>
+                  <a
+                    href="/docs/proforma-contrato.zip"
+                    download
+                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition text-sm"
+                  >
+                    <Download size={16} />
+                    Descargar proforma
+                  </a>
+                  <p className="text-gray-500 text-xs mt-2">
+                    Formato ZIP - Tamaño aproximado: 2.5 MB
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
           
           {/* Mapa */}
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">

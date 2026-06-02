@@ -21,6 +21,7 @@ import UsuariosAdmin from './pages/admin/UsuariosAdmin';
 import SuscriptoresAdmin from './pages/admin/SuscriptoresAdmin';
 import TestimoniosAdmin from './pages/admin/TestimoniosAdmin';
 import EquipoAdmin from './pages/admin/EquipoAdmin';
+import ProformaAdmin from './pages/admin/ProformaAdmin';
 
 
 
@@ -54,6 +55,7 @@ function App() {
           <Route path="/admin/testimonios" element={<ProtectedRoute><TestimoniosAdmin /></ProtectedRoute>} />
           <Route path="/admin/usuarios" element={<ProtectedRoute><UsuariosAdmin /></ProtectedRoute>} />
           <Route path="/admin/equipo" element={<ProtectedRoute><EquipoAdmin /></ProtectedRoute>} />
+          <Route path="/admin/proforma" element={<ProtectedRoute><ProformaAdmin /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
     </Router>

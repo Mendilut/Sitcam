@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard,Users, Package, Server,Star, MessageSquare, Settings, Tags, UserCog, Mail as MailIcon } from 'lucide-react';
+import { FileArchive } from 'lucide-react';
 
 
 function Sidebar() {
@@ -11,6 +12,7 @@ function Sidebar() {
     { path: '/admin/mensajes', icon: MessageSquare, label: 'Mensajes', end: false },
     { path: '/admin/testimonios', icon: Star, label: 'Testimonios', end: false },
     { path: '/admin/suscriptores', icon: MailIcon, label: 'Suscriptores', end: false },
+    { path: '/admin/proforma', icon: FileArchive, label: 'Proforma', end: false },
     { path: '/admin/usuarios', icon: UserCog, label: 'Usuarios', end: false },
     { path: '/admin/equipo', icon: Users, label: 'Equipo', end: false },
     { path: '/admin/configuracion', icon: Settings, label: 'Configuración', end: false },
