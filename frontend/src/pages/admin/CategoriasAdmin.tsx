@@ -38,7 +38,7 @@ function CategoriasAdmin() {
   const fetchCategorias = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3000/api/categorias', {
+      const response = await fetch('/api/categorias', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -89,8 +89,8 @@ function CategoriasAdmin() {
 
     const token = localStorage.getItem('token');
     const url = editingCategoria
-      ? `http://localhost:3000/api/categorias/${editingCategoria.id}`
-      : 'http://localhost:3000/api/categorias';
+      ? `/api/categorias/${editingCategoria.id}`
+      : '/api/categorias';
     const method = editingCategoria ? 'PUT' : 'POST';
 
     try {
@@ -124,7 +124,7 @@ function CategoriasAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/categorias/${id}`, {
+      const response = await fetch(`/api/categorias/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -147,7 +147,7 @@ function CategoriasAdmin() {
     const nuevoEstado = categoria.activo === 1 ? 0 : 1;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/categorias/${categoria.id}`, {
+      const response = await fetch(`/api/categorias/${categoria.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

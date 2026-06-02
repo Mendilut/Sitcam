@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { MapPin, Mail, Phone, Clock, FileText, Download } from 'lucide-react';
+import { MapPin, Mail, Phone, Clock, FileText, } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 interface Configuracion {

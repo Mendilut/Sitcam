@@ -30,7 +30,7 @@ function ProductoDetalle() {
       setError('');
 
       try {
-        const response = await fetch(`http://localhost:3000/api/productos/${id}`);
+        const response = await fetch(`/api/productos/${id}`);
 
         if (!response.ok) {
           if (response.status === 404) {

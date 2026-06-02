@@ -39,13 +39,13 @@ function Servicios() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_URL = 'http://localhost:3000/api/servicios';
+  const API_URL = '/api/servicios';
 
   // Cargar categorías
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/categorias/public');
+        const response = await fetch('/api/categorias/public');
         const data = await response.json();
         const categoriasServicio = data.filter((c: any) => c.tipo === 'servicio');
         setCategorias(categoriasServicio);

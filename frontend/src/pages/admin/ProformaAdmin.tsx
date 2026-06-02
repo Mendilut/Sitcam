@@ -16,7 +16,7 @@ function ProformaAdmin() {
 
   const fetchInfo = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/archivos/proforma');
+      const response = await fetch('/api/archivos/proforma');
       const data = await response.json();
       setArchivoInfo(data);
     } catch (error) {
@@ -59,7 +59,7 @@ function ProformaAdmin() {
     formData.append('archivo', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:3000/api/archivos/proforma', {
+      const response = await fetch('/api/archivos/proforma', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -90,7 +90,7 @@ function ProformaAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3000/api/archivos/proforma', {
+      const response = await fetch('/api/archivos/proforma', {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

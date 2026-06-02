@@ -28,7 +28,7 @@ function Contacto() {
   useEffect(() => {
     const checkProforma = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/archivos/proforma');
+        const response = await fetch('/api/archivos/proforma');
         if (response.ok) {
           const data = await response.json();
           setProformaExists(data.exists);
@@ -65,7 +65,7 @@ function Contacto() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/mensajes', {
+      const response = await fetch('/api/mensajes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

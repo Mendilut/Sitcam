@@ -22,7 +22,7 @@ function TestimoniosAdmin() {
   const fetchTestimonios = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3000/api/testimonios/admin', {
+      const response = await fetch('/api/testimonios/admin', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -40,7 +40,7 @@ function TestimoniosAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/testimonios/${id}`, {
+      const response = await fetch(`/api/testimonios/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -64,7 +64,7 @@ function TestimoniosAdmin() {
     const nuevoEstado = testimonio.activo === 1 ? 0 : 1;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/testimonios/${testimonio.id}`, {
+      const response = await fetch(`/api/testimonios/${testimonio.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

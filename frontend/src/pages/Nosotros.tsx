@@ -17,7 +17,7 @@ function Nosotros() {
   useEffect(() => {
     const fetchEquipo = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/equipo');
+        const response = await fetch('/api/equipo');
         const data = await response.json();
         setEquipo(data);
       } catch (error) {

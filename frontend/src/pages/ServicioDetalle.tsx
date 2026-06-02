@@ -31,7 +31,7 @@ function ServicioDetalle() {
       setError('');
 
       try {
-        const response = await fetch(`http://localhost:3000/api/servicios/${id}`);
+        const response = await fetch(`/api/servicios/${id}`);
 
         if (!response.ok) {
           if (response.status === 404) {

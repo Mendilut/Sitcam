@@ -18,7 +18,7 @@ function Admin() {
       setLoading(true);
       try {
         // Obtener productos
-        const productosRes = await fetch('http://localhost:3000/api/productos?limit=100');
+        const productosRes = await fetch('/api/productos?limit=100');
         const productosData = await productosRes.json();
 
         // Obtener servicios

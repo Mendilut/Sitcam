@@ -36,7 +36,7 @@ function ServiciosAdmin() {
 
  const fetchServicios = async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/servicios');
+    const response = await fetch('/api/servicios');
     const data = await response.json();
     
     // Si la respuesta es un array, usarlo directamente
@@ -67,7 +67,7 @@ function ServiciosAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/servicios/${id}`, {
+      const response = await fetch(`/api/servicios/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

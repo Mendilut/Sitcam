@@ -41,7 +41,7 @@ function Testimonios() {
   useEffect(() => {
     const fetchTestimonios = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/testimonios');
+        const response = await fetch('/api/testimonios');
         if (!response.ok) throw new Error('Error al cargar testimonios');
         const data = await response.json();
         setTestimonios(data);
@@ -102,7 +102,7 @@ function Testimonios() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/testimonios', {
+      const response = await fetch('/api/testimonios', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -130,7 +130,7 @@ function Testimonios() {
         });
         
         // Recargar testimonios
-        const testimoniosResponse = await fetch('http://localhost:3000/api/testimonios');
+        const testimoniosResponse = await fetch('/api/testimonios');
         const nuevosTestimonios = await testimoniosResponse.json();
         setTestimonios(nuevosTestimonios);
         

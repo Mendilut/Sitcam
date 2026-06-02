@@ -29,7 +29,7 @@ function EquipoAdmin() {
   const fetchMiembros = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3000/api/equipo/admin', {
+      const response = await fetch('/api/equipo/admin', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -68,8 +68,8 @@ function EquipoAdmin() {
 
     const token = localStorage.getItem('token');
     const url = editingMiembro?.id 
-      ? `http://localhost:3000/api/equipo/${editingMiembro.id}`
-      : 'http://localhost:3000/api/equipo';
+      ? `/api/equipo/${editingMiembro.id}`
+      : '/api/equipo';
     const method = editingMiembro?.id ? 'PUT' : 'POST';
 
     try {
@@ -103,7 +103,7 @@ function EquipoAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/equipo/${id}`, {
+      const response = await fetch(`/api/equipo/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -125,7 +125,7 @@ function EquipoAdmin() {
     const nuevoEstado = miembro.activo === 1 ? 0 : 1;
     
     try {
-      const response = await fetch(`http://localhost:3000/api/equipo/${miembro.id}`, {
+      const response = await fetch(`/api/equipo/${miembro.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

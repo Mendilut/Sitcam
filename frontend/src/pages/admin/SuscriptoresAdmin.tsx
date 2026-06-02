@@ -23,7 +23,7 @@ function SuscriptoresAdmin() {
   const fetchSuscriptores = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3000/api/suscriptores', {
+      const response = await fetch('/api/suscriptores', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -40,7 +40,7 @@ function SuscriptoresAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/suscriptores/${email}`, {
+      const response = await fetch(`/api/suscriptores/${email}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

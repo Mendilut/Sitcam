@@ -27,7 +27,7 @@ function ConfiguracionAdmin() {
   const fetchConfiguraciones = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3000/api/configuracion/admin', {
+      const response = await fetch('/api/configuracion/admin', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -59,7 +59,7 @@ function ConfiguracionAdmin() {
     const token = localStorage.getItem('token');
     
     try {
-      const response = await fetch(`http://localhost:3000/api/configuracion/${config.clave}`, {
+      const response = await fetch(`api/configuracion/${config.clave}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

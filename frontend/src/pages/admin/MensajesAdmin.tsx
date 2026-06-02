@@ -64,7 +64,7 @@ function MensajesAdmin() {
   const fetchMensajes = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3000/api/mensajes', {
+      const response = await fetch('/api/mensajes', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -83,7 +83,7 @@ function MensajesAdmin() {
   const marcarLeido = async (id: number) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/mensajes/${id}/leido`, {
+      const response = await fetch(`/api/mensajes/${id}/leido`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -104,7 +104,7 @@ function MensajesAdmin() {
   const marcarRespondido = async (id: number) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/mensajes/${id}/respondido`, {
+      const response = await fetch(`/api/mensajes/${id}/respondido`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -127,7 +127,7 @@ function MensajesAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/mensajes/${id}`, {
+      const response = await fetch(`/api/mensajes/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

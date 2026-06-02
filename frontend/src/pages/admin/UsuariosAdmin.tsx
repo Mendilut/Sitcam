@@ -40,7 +40,7 @@ function UsuariosAdmin() {
   const fetchUsuarios = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3000/api/usuarios', {
+      const response = await fetch('/api/usuarios', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -83,8 +83,8 @@ function UsuariosAdmin() {
 
     const token = localStorage.getItem('token');
     const url = editingUsuario
-      ? `http://localhost:3000/api/usuarios/${editingUsuario.id}`
-      : 'http://localhost:3000/api/usuarios';
+      ? `/api/usuarios/${editingUsuario.id}`
+      : '/api/usuarios';
     const method = editingUsuario ? 'PUT' : 'POST';
 
     try {
@@ -131,7 +131,7 @@ function UsuariosAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/usuarios/${selectedUserId}/password`, {
+      const response = await fetch(`/api/usuarios/${selectedUserId}/password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ function UsuariosAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+      const response = await fetch(`/api/usuarios/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -188,7 +188,7 @@ function UsuariosAdmin() {
     const nuevoEstado = usuario.activo === 1 ? 0 : 1;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/usuarios/${usuario.id}`, {
+      const response = await fetch(`/api/usuarios/${usuario.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

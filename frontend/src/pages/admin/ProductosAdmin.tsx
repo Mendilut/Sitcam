@@ -24,7 +24,7 @@ function ProductosAdmin() {
 
   const fetchProductos = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/productos?limit=100');
+      const response = await fetch('/api/productos?limit=100');
       const data = await response.json();
       setProductos(data.productos || []);
     } catch (error) {
@@ -44,7 +44,7 @@ function ProductosAdmin() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
+      const response = await fetch(`/api/productos/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

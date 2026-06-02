@@ -30,14 +30,14 @@ function Productos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_URL = 'http://localhost:3000/api/productos';
+  const API_URL = '/api/productos';
 
   // Cargar categorías
   useEffect(() => {
     // En Productos.tsx, modifica el fetch de categorías:
     const fetchCategorias = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/categorias/public');
+        const response = await fetch('/api/categorias/public');
         const data = await response.json();
         // Filtrar solo categorías de productos
         const categoriasProducto = data.filter((c: any) => c.tipo === 'producto');
