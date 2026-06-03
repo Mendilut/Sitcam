@@ -40,7 +40,7 @@ function ServicioForm({ servicio, onClose, onSuccess }: ServicioFormProps) {
     const fetchCategorias = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/api/categorias', {
+        const response = await fetch('/api/categorias', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
@@ -112,8 +112,8 @@ function ServicioForm({ servicio, onClose, onSuccess }: ServicioFormProps) {
 
     const token = localStorage.getItem('token');
     const url = servicio?.id 
-      ? `http://localhost:3000/api/servicios/${servicio.id}`
-      : 'http://localhost:3000/api/servicios';
+      ? `/api/servicios/${servicio.id}`
+      : '/api/servicios';
     const method = servicio?.id ? 'PUT' : 'POST';
 
     try {

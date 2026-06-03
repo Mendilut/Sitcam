@@ -78,8 +78,8 @@ function TestimonioForm({ testimonio, onClose, onSuccess }: TestimonioFormProps)
 
     const token = localStorage.getItem('token');
     const url = testimonio?.id 
-      ? `http://localhost:3000/api/testimonios/${testimonio.id}`
-      : 'http://localhost:3000/api/testimonios';
+      ? `/api/testimonios/${testimonio.id}`
+      : '/api/testimonios';
     const method = testimonio?.id ? 'PUT' : 'POST';
 
     try {

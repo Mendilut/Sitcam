@@ -6,7 +6,7 @@ interface Producto {
   id: number;
   nombre: string;
   descripcion: string;
-  precio: number;
+  precio: number | null;
   categoria_id: number;
   categoria_nombre?: string;
   imagen_data: string | null;
@@ -93,12 +93,12 @@ function ProductoDetalle() {
     <div className="max-w-5xl mx-auto px-4 py-8">
       {/* Botón volver */}
       <Link to="/productos" className="inline-flex items-center gap-1 text-gray-400 hover:text-white text-sm mb-6 transition">
-        <ArrowLeft size={16} /> Volver
+        <ArrowLeft size={16} /> Volver a productos
       </Link>
 
-      {/* Grid principal más compacto */}
+      {/* Grid principal */}
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Imagen - más pequeña */}
+        {/* Imagen */}
         <div className="bg-gray-800 rounded-lg h-64 flex items-center justify-center border border-gray-700">
           {producto.imagen_data ? (
             <img
@@ -124,38 +124,17 @@ function ProductoDetalle() {
                   <Info size={12} /> Destacado
                 </span>
               )}
-              <span className="inline-flex items-center gap-1 bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full">
-                Consultar precio
-              </span>
             </div>
           </div>
 
           <p className="text-gray-300 text-sm mb-4">{producto.descripcion}</p>
 
-          {/* Info rápida en 3 columnas */}
-          <div className="grid grid-cols-3 gap-2 mb-6">
-            {producto.tiempo_entrega && (
-              <div className="bg-gray-800 rounded-lg p-2 text-center border border-gray-700">
-                <Clock className="text-blue-400 w-4 h-4 mx-auto mb-1" />
-                <p className="text-gray-500 text-xs">Entrega</p>
-                <p className="text-white text-xs font-medium truncate">{producto.tiempo_entrega}</p>
-              </div>
-            )}
-            {producto.garantia && (
-              <div className="bg-gray-800 rounded-lg p-2 text-center border border-gray-700">
-                <Shield className="text-blue-400 w-4 h-4 mx-auto mb-1" />
-                <p className="text-gray-500 text-xs">Garantía</p>
-                <p className="text-white text-xs font-medium truncate">{producto.garantia}</p>
-              </div>
-            )}
-            {producto.incluye && (
-              <div className="bg-gray-800 rounded-lg p-2 text-center border border-gray-700">
-                <Gift className="text-blue-400 w-4 h-4 mx-auto mb-1" />
-                <p className="text-gray-500 text-xs">Incluye</p>
-                <p className="text-white text-xs font-medium">Ver abajo</p>
-              </div>
-            )}
-          </div>
+          {/* Precio - solo si existe */}
+          {producto.precio ? (
+            <div className="mb-6">
+              <span className="text-blue-400 font-bold text-2xl">${producto.precio}</span>
+            </div>
+          ) : null}
 
           {/* Botones */}
           <div className="flex gap-3">
@@ -169,7 +148,7 @@ function ProductoDetalle() {
               to="/productos"
               className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-medium text-sm py-2 rounded-lg transition text-center"
             >
-              Ver más
+              Ver más productos
             </Link>
           </div>
         </div>
@@ -197,6 +176,30 @@ function ProductoDetalle() {
           </div>
         )}
       </div>
+
+      {/* Garantía y entrega */}
+      {(producto.garantia || producto.tiempo_entrega) && (
+        <div className="mt-6 bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <div className="flex flex-wrap gap-6">
+            {producto.tiempo_entrega && (
+              <div>
+                <h3 className="text-sm font-semibold text-gray-400 mb-1 flex items-center gap-1">
+                  <Clock size={14} /> Tiempo de entrega
+                </h3>
+                <p className="text-white text-sm">{producto.tiempo_entrega}</p>
+              </div>
+            )}
+            {producto.garantia && (
+              <div>
+                <h3 className="text-sm font-semibold text-gray-400 mb-1 flex items-center gap-1">
+                  <Shield size={14} /> Garantía
+                </h3>
+                <p className="text-white text-sm">{producto.garantia}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

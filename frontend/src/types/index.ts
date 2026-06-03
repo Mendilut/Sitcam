@@ -2,7 +2,7 @@ export interface ProductoFormData {
   id?: number;
   nombre: string;
   descripcion: string;
-  precio: number;
+  precio: number | null;
   categoria_id: number;
   imagen_data: string | null;
   imagen_tipo: string | null;
@@ -17,7 +17,7 @@ export interface Producto {
   id: number;
   nombre: string;
   descripcion: string;
-  precio: number;
+  precio: number | null;
   categoria_id: number;
   categoria_nombre?: string;
   imagen_data: string | null;

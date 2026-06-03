@@ -7,7 +7,7 @@ export interface Producto {
   id: number;
   nombre: string;
   descripcion: string;
-  precio: number;
+  precio: number | null;
   categoria_id: number;
   imagen_data: string | null;
   imagen_tipo: string | null;
@@ -64,7 +64,7 @@ export const ProductoModel = {
   
   // Crear un nuevo producto
   create: (producto: Omit<Producto, 'id' | 'created_at'>): number => {
-    console.log('Creando producto con categoria_id:', producto.categoria_id);
+    console.log('Creando producto:', { nombre: producto.nombre, precio: producto.precio });
     
     const result = db.prepare(`
       INSERT INTO productos (nombre, descripcion, precio, categoria_id, imagen_data, imagen_tipo, destacado, caracteristicas, tiempo_entrega, garantia, incluye)
@@ -72,7 +72,7 @@ export const ProductoModel = {
     `).run(
       producto.nombre,
       producto.descripcion,
-      producto.precio,
+      producto.precio ?? null,
       producto.categoria_id,
       producto.imagen_data || null,
       producto.imagen_tipo || null,
@@ -100,7 +100,7 @@ export const ProductoModel = {
     }
     if (producto.precio !== undefined) {
       fields.push('precio = ?');
-      values.push(producto.precio);
+      values.push(producto.precio ?? null);
     }
     if (producto.categoria_id !== undefined) {
       fields.push('categoria_id = ?');
@@ -138,7 +138,9 @@ export const ProductoModel = {
     if (fields.length === 0) return false;
     
     values.push(id);
-    const result = db.prepare(`UPDATE productos SET ${fields.join(', ')} WHERE id = ?`).run(...values);
+    const sql = `UPDATE productos SET ${fields.join(', ')} WHERE id = ?`;
+    console.log('SQL:', sql);
+    const result = db.prepare(sql).run(...values);
     return result.changes > 0;
   },
   

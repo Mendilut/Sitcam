@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { MapPin, Mail, Phone, Clock, FileText, } from 'lucide-react';
+import { MapPin, Mail, Phone, Clock, FileText } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 interface Configuracion {
@@ -27,11 +27,18 @@ function Footer() {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
+        console.log('🔄 Cargando configuración...');
         const response = await fetch('/api/configuracion');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        
         const data = await response.json();
+        console.log('✅ Configuración cargada:', data);
         setConfig(data);
       } catch (error) {
-        console.error('Error al cargar configuración:', error);
+        console.error('❌ Error al cargar configuración:', error);
       } finally {
         setLoading(false);
       }
@@ -85,6 +92,7 @@ function Footer() {
         setNewsletterError(true);
       }
     } catch (error) {
+      console.error('Error:', error);
       setNewsletterMensaje('Error de conexión');
       setNewsletterError(true);
     } finally {
@@ -97,7 +105,7 @@ function Footer() {
     return (
       <footer className="bg-gray-900 border-t border-gray-800 mt-auto">
         <div className="max-w-6xl mx-auto px-4 py-12 text-center text-gray-400">
-          Cargando...
+          Cargando configuración...
         </div>
       </footer>
     );
@@ -185,17 +193,25 @@ function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">Contacto</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
-              {config.direccion && (
+              {config.direccion ? (
                 <li className="flex items-center gap-2"><MapPin size={16} /> {config.direccion}</li>
+              ) : (
+                <li className="flex items-center gap-2 text-gray-500"><MapPin size={16} /> No especificada</li>
               )}
-              {config.email_contacto && (
+              {config.email_contacto ? (
                 <li className="flex items-center gap-2"><Mail size={16} /> {config.email_contacto}</li>
+              ) : (
+                <li className="flex items-center gap-2 text-gray-500"><Mail size={16} /> No especificado</li>
               )}
-              {config.telefono && (
+              {config.telefono ? (
                 <li className="flex items-center gap-2"><Phone size={16} /> {config.telefono}</li>
+              ) : (
+                <li className="flex items-center gap-2 text-gray-500"><Phone size={16} /> No especificado</li>
               )}
-              {config.horario && (
+              {config.horario ? (
                 <li className="flex items-center gap-2"><Clock size={16} /> {config.horario}</li>
+              ) : (
+                <li className="flex items-center gap-2 text-gray-500"><Clock size={16} /> No especificado</li>
               )}
             </ul>
           </div>

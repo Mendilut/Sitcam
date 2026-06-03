@@ -6,7 +6,7 @@ interface Producto {
   id: number;
   nombre: string;
   descripcion: string;
-  precio: number;
+  precio: number | null;
   categoria_id: number;
   categoria_nombre?: string;
   imagen_data: string | null;
@@ -34,12 +34,10 @@ function Productos() {
 
   // Cargar categorías
   useEffect(() => {
-    // En Productos.tsx, modifica el fetch de categorías:
     const fetchCategorias = async () => {
       try {
         const response = await fetch('/api/categorias/public');
         const data = await response.json();
-        // Filtrar solo categorías de productos
         const categoriasProducto = data.filter((c: any) => c.tipo === 'producto');
         setCategorias(categoriasProducto);
       } catch (error) {
@@ -179,7 +177,9 @@ function Productos() {
               <div className="p-4">
                 <div className="flex justify-between items-start gap-2 mb-1">
                   <h3 className="text-base font-semibold text-white line-clamp-1">{producto.nombre}</h3>
-                  
+                  {producto.precio ? (
+                    <span className="text-blue-400 font-bold text-sm">${producto.precio}</span>
+                  ) : null}
                 </div>
 
                 <div className="mb-2">

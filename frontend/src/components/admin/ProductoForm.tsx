@@ -40,7 +40,7 @@ function ProductoForm({ producto, onClose, onSuccess }: ProductoFormProps) {
     const fetchCategorias = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/api/categorias', {
+        const response = await fetch('/api/categorias', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
@@ -113,8 +113,8 @@ function ProductoForm({ producto, onClose, onSuccess }: ProductoFormProps) {
 
     const token = localStorage.getItem('token');
     const url = producto?.id
-      ? `http://localhost:3000/api/productos/${producto.id}`
-      : 'http://localhost:3000/api/productos';
+      ? `/api/productos/${producto.id}`
+      : '/api/productos';
 
     const method = producto?.id ? 'PUT' : 'POST';
 
@@ -232,21 +232,21 @@ function ProductoForm({ producto, onClose, onSuccess }: ProductoFormProps) {
           {/* Precio y Categoría */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-300 text-sm mb-1">Precio USD *</label>
+              <label className="block text-gray-300 text-sm mb-1">Precio (opcional)</label>
               <input
                 type="number"
                 step="0.01"
-                value={formData.precio === 0 ? '' : formData.precio}
+                value={formData.precio === 0 || formData.precio === null ? '' : formData.precio}
                 onChange={(e) => {
                   const value = e.target.value;
                   setFormData({
                     ...formData,
-                    precio: value === '' ? 0 : parseFloat(value)
+                    precio: value === '' ? null : parseFloat(value)
                   });
                 }}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
-                required
               />
+              <p className="text-gray-500 text-xs mt-1">Dejar vacío si no tiene precio fijo</p>
             </div>
             <div>
               <label className="block text-gray-300 text-sm mb-1">Categoría *</label>
