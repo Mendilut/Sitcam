@@ -39,6 +39,19 @@ router.get('/:id', (req, res) => {
   }
 });
 
+// GET /api/servicios/suggest - Sugerencias para autocompletado
+router.get('/suggest', (req, res) => {
+  const { q = '', limit = '5' } = req.query;
+  
+  if (!q || (q as string).length < 2) {
+    res.json([]);
+    return;
+  }
+  
+  const suggestions = ServicioModel.getSuggestions(q as string, parseInt(limit as string));
+  res.json(suggestions);
+});
+
 // POST /api/servicios - Crear servicio (protegido)
 router.post('/', verificarToken, (req, res) => {
   try {

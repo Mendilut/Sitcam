@@ -110,3 +110,26 @@ export interface MiembroEquipo extends MiembroEquipoFormData {
   id: number;
   created_at: string;
 }
+
+// ========== CATEGORÍAS ==========
+// ========== CATEGORÍAS ==========
+export interface Categoria {
+  id: number;
+  nombre: string;
+  tipo: 'producto' | 'servicio';  // ← Cambiado a tipo específico
+  icono?: string;
+  descripcion?: string;
+  activo?: number;
+  orden?: number;
+  created_at?: string;
+}
+
+export interface CategoriaFormData {
+  id?: number;
+  nombre: string;
+  tipo: 'producto' | 'servicio';
+  icono?: string;
+  descripcion?: string;
+  activo?: number;
+  orden?: number;
+}

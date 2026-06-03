@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, ChevronLeft, ChevronRight, Loader, Code, Smartphone, Shield, Database, Cloud, BarChart } from 'lucide-react';
+import { Filter, ChevronLeft, ChevronRight, Loader, Code, Smartphone, Shield, Database, Cloud, BarChart, LucideIcon } from 'lucide-react';
+import SearchInput from '../components/ui/SearchInput';
 
 interface Servicio {
   id: number;
@@ -17,9 +18,10 @@ interface Servicio {
 interface Categoria {
   id: number;
   nombre: string;
+  tipo: string;
 }
 
-const iconos: { [key: string]: any } = {
+const iconos: Record<string, LucideIcon> = {
   Code: Code,
   Smartphone: Smartphone,
   Shield: Shield,
@@ -27,7 +29,6 @@ const iconos: { [key: string]: any } = {
   Cloud: Cloud,
   BarChart: BarChart
 };
-
 function Servicios() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoriaId, setCategoriaId] = useState<number>(0);
@@ -47,7 +48,7 @@ function Servicios() {
       try {
         const response = await fetch('/api/categorias/public');
         const data = await response.json();
-        const categoriasServicio = data.filter((c: any) => c.tipo === 'servicio');
+        const categoriasServicio = data.filter((c: Categoria) => c.tipo === 'servicio');
         setCategorias(categoriasServicio);
       } catch (error) {
         console.error('Error al cargar categorías:', error);
@@ -61,7 +62,7 @@ function Servicios() {
     const fetchServicios = async () => {
       setLoading(true);
       setError('');
-
+      
       try {
         const params = new URLSearchParams({
           search: searchTerm,
@@ -69,17 +70,14 @@ function Servicios() {
           page: currentPage.toString(),
           limit: '6'
         });
-
-        console.log('Parámetros de búsqueda:', params.toString());
-
+        
         const response = await fetch(`${API_URL}?${params}`);
-
+        
         if (!response.ok) {
           throw new Error('Error al cargar servicios');
         }
-
+        
         const data = await response.json();
-        console.log('Respuesta del servidor:', data);
         setServicios(data.servicios || data);
         setTotalPages(data.totalPages || Math.ceil((data.length || 0) / 6));
         setTotal(data.total || data.length || 0);
@@ -89,21 +87,10 @@ function Servicios() {
         setLoading(false);
       }
     };
+    
     fetchServicios();
   }, [searchTerm, categoriaId, currentPage]);
 
-  const normalizeText = (text: string) => {
-    return text
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
-  };
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const normalized = normalizeText(e.target.value);
-    setSearchTerm(normalized);
-    setCurrentPage(1);
-  };
   const handleCategoriaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategoriaId(parseInt(e.target.value));
     setCurrentPage(1);
@@ -126,18 +113,14 @@ function Servicios() {
 
       {/* Barra de búsqueda y filtros */}
       <div className="mb-6 flex flex-col md:flex-row gap-3">
-        <div className="flex-1">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Buscar servicios..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="w-full pl-9 pr-3 py-1.5 text-sm bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-blue-500"
-            />
-          </div>
-        </div>
+        <SearchInput
+          onSearch={(term) => {
+            setSearchTerm(term);
+            setCurrentPage(1);
+          }}
+          placeholder="Buscar servicios..."
+          endpoint="/api/servicios/suggest"
+        />
         <div className="w-full md:w-56">
           <div className="relative">
             <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -179,12 +162,14 @@ function Servicios() {
           {servicios.map((servicio) => {
             const IconComponent = iconos[servicio.icono] || Code;
             return (
-              <div key={servicio.id} className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-blue-500 transition group">
-                {/* Imagen o Icono */}
+              <div 
+                key={servicio.id} 
+                className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-blue-500 transition group"
+              >
                 <div className="h-40 bg-gray-700 flex items-center justify-center overflow-hidden">
                   {servicio.imagen_data ? (
-                    <img
-                      src={servicio.imagen_data}
+                    <img 
+                      src={servicio.imagen_data} 
                       alt={servicio.titulo}
                       className="w-full h-full object-contain p-2"
                     />
@@ -192,8 +177,7 @@ function Servicios() {
                     <IconComponent className="text-blue-400 w-16 h-16" />
                   )}
                 </div>
-
-                {/* Contenido */}
+                
                 <div className="p-4">
                   <div className="flex justify-between items-start gap-2 mb-1">
                     <h3 className="text-base font-semibold text-white line-clamp-1">{servicio.titulo}</h3>
@@ -201,36 +185,34 @@ function Servicios() {
                       <span className="bg-yellow-600 text-white text-xs px-2 py-0.5 rounded-full">Destacado</span>
                     )}
                   </div>
-
+                  
                   <div className="mb-2">
-                    <span className="inline-block bg-gray-700 text-gray-300 text-xs px-2 py-0.5 rounded-full">
+                    <span className="inline-block bg-gray-700 text-gray-300 text-xs px-2 py-0.5 rounded">
                       📁 {servicio.categoria_nombre || `Cat. ${servicio.categoria_id}`}
                     </span>
                   </div>
-
-                  <p className="text-gray-400 text-xs mb-4 line-clamp-2">{servicio.descripcion}</p>
-
-                  {/* Precio y botones integrados */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
+                  
+                  <p className="text-gray-400 text-xs mb-3 line-clamp-2">{servicio.descripcion}</p>
+                  
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-700">
                     <div>
                       <span className="text-blue-400 font-bold text-lg">${servicio.precio}</span>
                       <span className="text-gray-500 text-xs ml-1">/ proyecto</span>
                     </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Link
-                      to={`/servicio/${servicio.id}`}
-                      className="flex-1 text-center bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium py-2 rounded-lg transition"
-                    >
-                      Ver detalles
-                    </Link>
-                    <Link
-                      to={`/contacto?producto=${encodeURIComponent(servicio.titulo)}&id=${servicio.id}&tipo=servicio`}
-                      className="flex-1 text-center bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium py-2 rounded-lg transition"
-                    >
-                      Solicitar
-                    </Link>
+                    <div className="flex gap-2">
+                      <Link
+                        to={`/servicio/${servicio.id}`}
+                        className="text-blue-400 hover:text-blue-300 text-xs font-medium transition"
+                      >
+                        Ver detalles
+                      </Link>
+                      <Link
+                        to={`/contacto?producto=${encodeURIComponent(servicio.titulo)}&id=${servicio.id}&tipo=servicio`}
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded transition"
+                      >
+                        Solicitar
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -249,22 +231,23 @@ function Servicios() {
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
-
+          
           {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
               onClick={() => setCurrentPage(page)}
-              className={`px-3 py-1 text-sm rounded-lg transition ${currentPage === page
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-800 border border-gray-700 text-white hover:bg-gray-700'
-                }`}
+              className={`px-3 py-1 text-sm rounded-lg transition ${
+                currentPage === page
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-800 border border-gray-700 text-white hover:bg-gray-700'
+              }`}
             >
               {page}
             </button>
           ))}
-
+          
           {totalPages > 5 && <span className="px-2 py-1 text-gray-400">...</span>}
-
+          
           <button
             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}

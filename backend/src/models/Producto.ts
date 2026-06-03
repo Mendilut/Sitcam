@@ -61,6 +61,24 @@ export const ProductoModel = {
   getById: (id: number): Producto | undefined => {
     return db.prepare('SELECT p.*, c.nombre as categoria_nombre FROM productos p LEFT JOIN categorias c ON p.categoria_id = c.id WHERE p.id = ?').get(id) as Producto | undefined;
   },
+  getSuggestions: (search: string, limit: number = 5): Array<{ id: number; nombre: string; imagen_tipo: string | null }> => {
+  if (!search || search.length < 2) return [];
+  
+  const normalized = `%${search.toLowerCase()}%`;
+  
+  const results = db.prepare(`
+    SELECT id, nombre, imagen_tipo 
+    FROM productos 
+    WHERE LOWER(nombre) LIKE ? OR LOWER(descripcion) LIKE ?
+    ORDER BY 
+      CASE WHEN LOWER(nombre) LIKE ? THEN 1 ELSE 2 END,
+      LENGTH(nombre)
+    LIMIT ?
+  `).all(normalized, normalized, normalized, limit) as Array<{ id: number; nombre: string; imagen_tipo: string | null }>;
+  
+  return results;
+},
+  
   
   // Crear un nuevo producto
   create: (producto: Omit<Producto, 'id' | 'created_at'>): number => {

@@ -61,7 +61,7 @@ function ProductoDetalle() {
           if (!cleanLine.trim()) return null;
           return (
             <div key={idx} className="flex items-start gap-2 text-sm">
-              <CheckCircle size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle size={14} className="text-green-500 mt-0.5 flex-shrink-" />
               <span className="text-gray-300">{cleanLine}</span>
             </div>
           );

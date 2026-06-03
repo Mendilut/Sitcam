@@ -86,6 +86,24 @@ export const ServicioModel = {
                    WHERE s.id = ?`;
     return db.prepare(query).get(id) as Servicio | undefined;
   },
+
+  getSuggestions: (search: string, limit: number = 5): Array<{ id: number; titulo: string; icono: string | null }> => {
+  if (!search || search.length < 2) return [];
+  
+  const normalized = `%${search.toLowerCase()}%`;
+  
+  const results = db.prepare(`
+    SELECT id, titulo, icono 
+    FROM servicios 
+    WHERE LOWER(titulo) LIKE ? OR LOWER(descripcion) LIKE ?
+    ORDER BY 
+      CASE WHEN LOWER(titulo) LIKE ? THEN 1 ELSE 2 END,
+      LENGTH(titulo)
+    LIMIT ?
+  `).all(normalized, normalized, normalized, limit) as Array<{ id: number; titulo: string; icono: string | null }>;
+  
+  return results;
+},
   
   // Crear un nuevo servicio
   create: (servicio: Omit<Servicio, 'id' | 'created_at'>): number => {

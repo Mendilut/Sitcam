@@ -18,6 +18,19 @@ router.get('/', (req, res) => {
   res.json(result);
 });
 
+// GET /api/productos/suggest - Sugerencias para autocompletado
+router.get('/suggest', (req, res) => {
+  const { q = '', limit = '5' } = req.query;
+  
+  if (!q || (q as string).length < 2) {
+    res.json([]);
+    return;
+  }
+  
+  const suggestions = ProductoModel.getSuggestions(q as string, parseInt(limit as string));
+  res.json(suggestions);
+});
+
 // GET /api/productos/:id - Obtener un producto (público)
 router.get('/:id', (req, res) => {
   const id = parseInt(req.params.id as string);

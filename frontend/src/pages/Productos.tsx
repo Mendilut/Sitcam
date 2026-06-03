@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, ShoppingBag, ChevronLeft, ChevronRight, Loader } from 'lucide-react';
+import { Filter, ShoppingBag, ChevronLeft, ChevronRight, Loader } from 'lucide-react';
+import SearchInput from '../components/ui/SearchInput';
 
 interface Producto {
   id: number;
@@ -17,6 +18,7 @@ interface Producto {
 interface Categoria {
   id: number;
   nombre: string;
+  tipo: string;
 }
 
 function Productos() {
@@ -38,7 +40,7 @@ function Productos() {
       try {
         const response = await fetch('/api/categorias/public');
         const data = await response.json();
-        const categoriasProducto = data.filter((c: any) => c.tipo === 'producto');
+        const categoriasProducto = data.filter((c: Categoria) => c.tipo === 'producto');
         setCategorias(categoriasProducto);
       } catch (error) {
         console.error('Error al cargar categorías:', error);
@@ -81,11 +83,6 @@ function Productos() {
     fetchProductos();
   }, [searchTerm, categoriaId, currentPage]);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
-  };
-
   const handleCategoriaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategoriaId(parseInt(e.target.value));
     setCurrentPage(1);
@@ -108,18 +105,14 @@ function Productos() {
 
       {/* Barra de búsqueda y filtros */}
       <div className="mb-8 flex flex-col md:flex-row gap-4">
-        <div className="flex-1">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Buscar productos..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-blue-500"
-            />
-          </div>
-        </div>
+        <SearchInput
+          onSearch={(term) => {
+            setSearchTerm(term);
+            setCurrentPage(1);
+          }}
+          placeholder="Buscar productos..."
+          endpoint="/api/productos/suggest"
+        />
         <div className="w-full md:w-64">
           <div className="relative">
             <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
