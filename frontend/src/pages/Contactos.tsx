@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Clock, Send, ArrowLeft, CheckCircle, AlertCircle, FileText, Download } from 'lucide-react';
 import MapaContacto from '../components/ui/MapaContacto';
@@ -14,15 +14,16 @@ function Contacto() {
   const [loading, setLoading] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
-  const [proformaExists, setProformaExists] = useState(false);
+  const [proformaExists, setProformaExists] = useState(true);
   const [checkingProforma, setCheckingProforma] = useState(true);
   
-  // Detectar si viene de un producto o servicio
   const params = new URLSearchParams(location.search);
   const producto = params.get('producto');
   const productoServicio = params.get('tipo') === 'servicio' ? 'servicio' : 'producto';
   const itemId = params.get('id');
   const itemNombre = params.get('nombre');
+  
+  const initialMessageSet = useRef(false);
 
   // Verificar si existe la proforma
   useEffect(() => {
@@ -33,8 +34,7 @@ function Contacto() {
           const data = await response.json();
           setProformaExists(data.exists);
         }
-      } catch (error) {
-        console.error('Error al verificar proforma:', error);
+      } catch {
         setProformaExists(false);
       } finally {
         setCheckingProforma(false);
@@ -43,12 +43,14 @@ function Contacto() {
     checkProforma();
   }, []);
 
+  // Establecer mensaje inicial solo una vez
   useEffect(() => {
-    if (producto) {
+    if (producto && !initialMessageSet.current) {
       setFormData(prev => ({
         ...prev,
         mensaje: `Hola, estoy interesado en el ${productoServicio}: ${producto}. Me gustaría recibir más información.`
       }));
+      initialMessageSet.current = true;
     }
   }, [producto, productoServicio]);
 
@@ -84,14 +86,13 @@ function Contacto() {
         const errorData = await response.json();
         setError(errorData.error || 'Error al enviar mensaje');
       }
-    } catch (err) {
+    } catch {
       setError('Error de conexión. Intente nuevamente.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Determinar la ruta de retorno
   const getBackUrl = () => {
     if (itemId && itemNombre) {
       return productoServicio === 'servicio' ? `/servicio/${itemId}` : `/producto/${itemId}`;
@@ -108,7 +109,6 @@ function Contacto() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">
-      {/* Botón volver dinámico */}
       <Link 
         to={getBackUrl()}
         className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition"
@@ -191,7 +191,6 @@ function Contacto() {
         
         {/* Columna derecha */}
         <div className="space-y-6">
-          {/* Información de contacto */}
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <h2 className="text-2xl font-semibold text-white mb-6">Información de contacto</h2>
             <div className="space-y-4">
@@ -226,7 +225,6 @@ function Contacto() {
             </div>
           </div>
           
-          {/* Tarjeta de descarga de proforma - solo si existe */}
           {!checkingProforma && proformaExists && (
             <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition">
               <div className="flex items-start gap-4">
@@ -254,7 +252,6 @@ function Contacto() {
             </div>
           )}
           
-          {/* Mapa */}
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <h2 className="text-xl font-semibold text-white mb-4">📍 Nuestra Ubicación</h2>
             <MapaContacto />

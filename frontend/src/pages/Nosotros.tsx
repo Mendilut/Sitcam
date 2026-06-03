@@ -142,7 +142,7 @@ function Nosotros() {
       </div>
 
       {/* CTA */}
-      <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-xl p-8 border border-gray-700 text-center">
+      <div className="bg-linear-to-r from-blue-900/50 to-purple-900/50 rounded-xl p-8 border border-gray-700 text-center">
         <h2 className="text-2xl font-bold text-white mb-4">¿Tienes un proyecto en mente?</h2>
         <a
           href="/contacto"

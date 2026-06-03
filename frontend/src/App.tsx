@@ -22,11 +22,13 @@ import SuscriptoresAdmin from './pages/admin/SuscriptoresAdmin';
 import TestimoniosAdmin from './pages/admin/TestimoniosAdmin';
 import EquipoAdmin from './pages/admin/EquipoAdmin';
 import ProformaAdmin from './pages/admin/ProformaAdmin';
+import { useSEO } from './config/seo';
 
 
 
 
 function App() {
+   useSEO();
   return (
     <Router>
       <AuthProvider>

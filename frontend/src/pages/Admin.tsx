@@ -31,8 +31,8 @@ function Admin() {
           } else if (serviciosData.servicios && Array.isArray(serviciosData.servicios)) {
             servicios = serviciosData.servicios.length;
           }
-        } catch (e) {
-          console.log('Endpoint de servicios no disponible');
+        } catch {
+          console.log('Endpoint de servicios no disponible aún');
         }
 
         // Obtener testimonios
@@ -41,7 +41,7 @@ function Admin() {
           const testimoniosRes = await fetch('/api/testimonios');
           const testimoniosData = await testimoniosRes.json();
           testimonios = Array.isArray(testimoniosData) ? testimoniosData.length : 0;
-        } catch (e) {
+        } catch {
           console.log('Endpoint de testimonios no disponible');
         }
 
@@ -56,9 +56,10 @@ function Admin() {
             const mensajesData = await mensajesRes.json();
             mensajes = Array.isArray(mensajesData) ? mensajesData.length : 0;
           }
-        } catch (e) {
-          console.log('Endpoint de mensajes no disponible');
+        } catch {
+          console.log('Endpoint de mensajes no disponible aún');
         }
+
 
         setStats({
           productos: productosData.total || productosData.length || 0,

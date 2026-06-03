@@ -1,15 +1,21 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X, Shield, LogIn } from 'lucide-react';
 
 function Header() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const initialCheckDone = useRef(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAdmin(!!token);
-    
+    if (!initialCheckDone.current) {
+      const token = localStorage.getItem('token');
+      setIsAdmin(!!token);
+      initialCheckDone.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
     const handleStorageChange = () => {
       const newToken = localStorage.getItem('token');
       setIsAdmin(!!newToken);
@@ -19,31 +25,27 @@ function Header() {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // Cerrar menú al cambiar de ruta
   const cerrarMenu = () => setMenuAbierto(false);
 
-  // Prevenir scroll del body cuando el menú está abierto
-  useEffect(() => {
-    if (menuAbierto) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [menuAbierto]);
-
   return (
-    <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+    <header className="bg-gray-800 border-b border-gray-900 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition" onClick={cerrarMenu}>
+          <div className="bg-gray-700 p-1.5 rounded-full">
+            <img 
+              src="public/images/Logo-sitcam.png" 
+              alt="SITCAM" 
+              className="h-8 w-auto"
+              onError={(e) => {
+                // Si la imagen no carga, mostrar un icono
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </div>
           <span className="text-lg sm:text-xl font-bold text-white hover:text-blue-400 transition">
-            SITCAM
+            
           </span>
-        </Link>
-        
-        {/* Navegación desktop */}
+        </Link>        
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
           <Link to="/" className="text-gray-300 hover:text-white transition text-sm">Inicio</Link>
           <Link to="/nosotros" className="text-gray-300 hover:text-white transition text-sm">Nosotros</Link>
@@ -71,101 +73,38 @@ function Header() {
           )}
         </nav>
         
-        {/* Botón menú móvil con animación */}
         <button 
           onClick={() => setMenuAbierto(!menuAbierto)}
-          className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-800 transition z-50"
+          className="md:hidden text-white p-2 hover:bg-gray-800 rounded-lg transition z-50"
           aria-label="Menú"
         >
-          <div className="relative w-6 h-6">
-            <span className={`absolute inset-0 transform transition-all duration-300 ease-in-out ${
-              menuAbierto ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'
-            }`}>
-              <Menu size={24} className="text-white" />
-            </span>
-            <span className={`absolute inset-0 transform transition-all duration-300 ease-in-out ${
-              menuAbierto ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'
-            }`}>
-              <X size={24} className="text-white" />
-            </span>
-          </div>
+          {menuAbierto ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
       
-      {/* Menú móvil desplegable con animación suave */}
       <div 
-        className={`fixed inset-0 bg-gray-900 z-40 transition-all duration-300 ease-in-out md:hidden ${
-          menuAbierto ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
+        className={`fixed inset-0 bg-gray-900 z-40 transition-transform duration-300 ease-in-out ${
+          menuAbierto ? 'translate-x-0' : 'translate-x-full'
+        } md:hidden`}
         style={{ top: '60px' }}
       >
-        {/* Overlay con blur */}
-        <div className="absolute inset-0 bg-gray-900/95 backdrop-blur-sm"></div>
-        
-        {/* Contenido del menú */}
-        <nav className="relative flex flex-col p-6 space-y-4 h-full overflow-y-auto">
-          <Link 
-            to="/" 
-            className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800 text-lg" 
-            onClick={cerrarMenu}
-          >
-            Inicio
-          </Link>
-          <Link 
-            to="/nosotros" 
-            className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800 text-lg" 
-            onClick={cerrarMenu}
-          >
-            Nosotros
-          </Link>
-          <Link 
-            to="/servicios" 
-            className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800 text-lg" 
-            onClick={cerrarMenu}
-          >
-            Servicios
-          </Link>
-          <Link 
-            to="/productos" 
-            className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800 text-lg" 
-            onClick={cerrarMenu}
-          >
-            Productos
-          </Link>
-          <Link 
-            to="/testimonios" 
-            className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800 text-lg" 
-            onClick={cerrarMenu}
-          >
-            Testimonios
-          </Link>
-          <Link 
-            to="/contacto" 
-            className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800 text-lg" 
-            onClick={cerrarMenu}
-          >
-            Contacto
-          </Link>
+        <nav className="flex flex-col p-6 space-y-4">
+          <Link to="/" className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800" onClick={cerrarMenu}>Inicio</Link>
+          <Link to="/nosotros" className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800" onClick={cerrarMenu}>Nosotros</Link>
+          <Link to="/servicios" className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800" onClick={cerrarMenu}>Servicios</Link>
+          <Link to="/productos" className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800" onClick={cerrarMenu}>Productos</Link>
+          <Link to="/testimonios" className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800" onClick={cerrarMenu}>Testimonios</Link>
+          <Link to="/contacto" className="text-gray-300 hover:text-white transition py-3 border-b border-gray-800" onClick={cerrarMenu}>Contacto</Link>
           
-          <div className="pt-4">
-            {isAdmin ? (
-              <Link 
-                to="/admin" 
-                className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition text-base font-medium" 
-                onClick={cerrarMenu}
-              >
-                <Shield size={20} /> Panel Admin
-              </Link>
-            ) : (
-              <Link 
-                to="/login" 
-                className="flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg transition text-base font-medium" 
-                onClick={cerrarMenu}
-              >
-                <LogIn size={20} /> Iniciar sesión
-              </Link>
-            )}
-          </div>
+          {isAdmin ? (
+            <Link to="/admin" className="flex items-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-lg transition" onClick={cerrarMenu}>
+              <Shield size={18} /> Panel Admin
+            </Link>
+          ) : (
+            <Link to="/login" className="flex items-center gap-2 bg-gray-700 text-white px-4 py-3 rounded-lg transition" onClick={cerrarMenu}>
+              <LogIn size={18} /> Iniciar sesión
+            </Link>
+          )}
         </nav>
       </div>
     </header>

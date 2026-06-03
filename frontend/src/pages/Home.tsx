@@ -5,7 +5,7 @@ function Home() {
   return (
     <div>
       {/* Banner principal */}
-      <section id="inicio" className="relative py-20 px-4 text-center bg-gradient-to-br from-blue-900 via-gray-900 to-gray-800 overflow-hidden">
+      <section className="relative py-20 px-4 text-center bg-linear-to-br from-blue-900 via-gray-900 to-gray-800 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-64 h-64 bg-blue-500 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500 rounded-full blur-3xl"></div>
@@ -198,7 +198,7 @@ function Home() {
       </section>
 
       {/* CTA Final */}
-      <section id="contacto" className="py-16 px-4 bg-gradient-to-r from-blue-800 to-purple-800">
+      <section id="contacto" className="py-16 px-4 bg-linear-to-r from-blue-800 to-purple-800">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
             ¿Listo para transformar tu negocio?

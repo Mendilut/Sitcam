@@ -62,7 +62,7 @@ function ServicioDetalle() {
           if (!cleanLine.trim()) return null;
           return (
             <div key={idx} className="flex items-start gap-2 text-sm">
-              <CheckCircle size={16} className="text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle size={16} className="text-green-500 mt-0.5 shrink-0" />
               <span className="text-gray-300">{cleanLine}</span>
             </div>
           );

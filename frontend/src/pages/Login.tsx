@@ -29,7 +29,7 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-gradient-to-br from-gray-900 to-gray-800">
+    <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-linear-to-br from-gray-900 to-gray-800">
       <div className="max-w-md w-full bg-gray-800 rounded-xl p-8 border border-gray-700">
         {/* Botón volver al inicio */}
         <Link 

@@ -140,7 +140,7 @@ function Testimonios() {
         setFormError(data.error || 'Error al enviar testimonio');
         setTimeout(() => setFormError(''), 5000);
       }
-    } catch (err) {
+    } catch {
       setFormError('Error de conexión. Intenta nuevamente.');
       setTimeout(() => setFormError(''), 5000);
     } finally {
