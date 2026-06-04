@@ -31,16 +31,15 @@ function Header() {
     <header className="bg-gray-800 border-b border-gray-900 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition" onClick={cerrarMenu}>
-          <div className="bg-gray-700 p-1.5 rounded-full">
-            <img 
-              src="public/images/Logo-sitcam.png" 
-              alt="SITCAM" 
-              className="h-8 w-auto"
-              onError={(e) => {
-                // Si la imagen no carga, mostrar un icono
-                e.currentTarget.style.display = 'none';
-              }}
-            />
+          <div className="bg-gray-700 p-1.5 rounded-full border-2 border-blue-400">
+          <img 
+            src="public/images/Logo-sitcam.png" 
+            alt="SITCAM" 
+            className="h-10 w-auto"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
           </div>
           <span className="text-lg sm:text-xl font-bold text-white hover:text-blue-400 transition">
             
